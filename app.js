@@ -23,6 +23,9 @@ app.use("/", loginRoute);
 const signupRoute = require("./routes/SignupRoute");
 app.use("/signup", signupRoute);
 
+const cloudRoute = require("./routes/CloudRoute");
+app.use("/cloud", cloudRoute);
+
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
