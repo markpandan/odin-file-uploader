@@ -1,0 +1,117 @@
+:root {
+  --primary-color: #070f2b;
+  --secondary-color: #1b1a55;
+  --tertiary-color: #535c91;
+  --accent-color: #9290c3;
+  --text-color: white;
+  --default-box-shadow-value: rgba(255, 255, 255, 0.2) 2.5px 2.5px 2.6px 2px;
+  --default-border-radius: 16px;
+  --default-font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background-color: var(--primary-color);
+  font-family: var(--default-font-family);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  font-family: var(--default-font-family);
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-family: var(--default-font-family);
+}
+
+::placeholder {
+  font-family: var(--default-font-family);
+}
+
+button {
+  font-family: var(--default-font-family);
+}
+
+.container {
+  max-width: 1140px;
+  margin: auto;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.container-header {
+  margin-bottom: 32px;
+}
+
+nav {
+  padding: 1rem;
+  background-color: var(--secondary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.navbar-item-group {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 32px;
+}
+
+.navbar-item a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+form > * {
+  display: block;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--accent-color);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--default-border-radius);
+}
+
+input:focus {
+  border: 1px solid gold;
+}
+
+button[type="submit"] {
+  color: var(--text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  margin: 1rem auto 0;
+  cursor: pointer;
+  background-color: var(--accent-color);
+}
+
+.login-container,
+.signup-container {
+  width: min(20rem, 100%);
+  background-color: var(--tertiary-color);
+  margin: auto;
+  box-shadow: var(--default-box-shadow-value);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.login-footer {
+  margin-top: 1rem;
+}
+
+.login-footer a {
+  color: var(--primary-color);
+}

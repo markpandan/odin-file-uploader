@@ -1,0 +1,15 @@
+<div class="container">
+    <h1 class="container-header">Create An Account</h1>
+    <div class="signup-container">
+        <form action="/signup" method="post">
+            <%- include('../components/error') %> 
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+</div>
