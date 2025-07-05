@@ -1,13 +1,35 @@
+<dialog id="new-folder-dialog">
+    <form action="/cloud/new-folder" method="post">
+        <label for="new-folder">Name The New Folder</label>
+        <input type="text" name="newFolder" id="new-folder">
+        <div class="button-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <button id="new-folder-close-button" class="close-dialog">X</button>
+</dialog>
+
+<dialog id="upload-file-dialog">
+    <form action="/cloud/upload-file" method="post">
+        <label for="upload-file">Upload The File</label>
+        <input type="file" name="uploadFile" id="upload-file">
+        <div class="button-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <button id="upload-file-close-button" class="close-dialog">X</button>
+</dialog>
+
 <div class="subheader-container">
-    <div class="">
+    <div>
         <div class="breadcrumbs">
             <a href="/" class="directory">Photos</a> <span>></span>
             <a href="/" class="directory">Images</a> <span>></span>
             <a href="/" class="directory">Family</a>
         </div>
         <div class="button-group">
-            <button>New Folder</button>
-            <button>Upload File</button>
+            <button id="new-folder-button">New Folder</button>
+            <button id="upload-file-button">Upload File</button>
         </div>
     </div>
 </div>
