@@ -1,8 +1,11 @@
 const express = require("express");
-// const session = require("express-session");
+const session = require("express-session");
 const path = require("node:path");
-// const passport = require("passport");
-// const pgSession = require("connect-pg-simple")(session);
+const passport = require("passport");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { PrismaClient } = require("@prisma/client");
+
+require("dotenv").config();
 
 const app = express();
 
@@ -12,19 +15,50 @@ app.set("view engine", "ejs");
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
-// require("./passport");
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+    },
+  })
+);
 
-// app.use(passport.session());
+require("./config/passport");
+
+app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 const loginRoute = require("./routes/LoginRoute");
 app.use("/", loginRoute);
+app.use("/login", loginRoute);
 
 const signupRoute = require("./routes/SignupRoute");
 app.use("/signup", signupRoute);
 
 const cloudRoute = require("./routes/CloudRoute");
 app.use("/cloud", cloudRoute);
+
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 const PORT = 8080;
 app.listen(PORT, () => {

@@ -1,7 +1,12 @@
 <nav>
     <a href="/"><h1>SkyShare</h1></a>
     <ul class="navbar-item-group">
+        <% if (currentUser) { %>
+        <a href="/cloud"><li class="navbar-item"><%= currentUser.username %></li></a>
+        <a href="/logout"><li class="navbar-item">Log Out</li></a>
+        <% } else { %>
         <a href="/"><li class="navbar-item">Log In</li></a>
         <a href="/signup"><li class="navbar-item">Sign Up</li></a>
+        <% } %>    
     </ul>
 </nav>

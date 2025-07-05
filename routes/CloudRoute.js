@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const util = require("../utils/authUtils");
 
 const controller = require("../controllers/CloudController");
-router.get("/", controller.cloudGet);
-router.post("/", controller.cloudPost);
+router.get("/", util.isAuth, controller.cloudGet);
+router.post("/", util.isAuth, controller.cloudPost);
 
 module.exports = router;
