@@ -1,7 +1,4 @@
-<% 
-    const relativeDirectory = directories.map(
-        (value) => value.id).reverse().join("/")
-%>
+
 
 <dialog id="new-folder-dialog">
     <form action="/cloud/new-folder" method="post">
@@ -17,10 +14,15 @@
 </dialog>
 
 <dialog id="upload-file-dialog">
+    <% 
+    const relativeDirectory = directories.map(
+        (value) => value.id).reverse().join("/")
+    %>
+    
     <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="<%= currentUser.id %>">
-        <input type="hidden" name="relativeDirectory" value="<%= relativeDirectory %>">
         <input type="hidden" name="parentId" value="<%= parentId %>">
+        <input type="hidden" name="relativeDirectory" value="<%= relativeDirectory %>">
         <label for="upload-file">Upload The File</label>
         <input type="file" name="uploadFile" id="upload-file">
         <div class="button-group">

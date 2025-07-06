@@ -1,9 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
+const { recursiveDirectory } = require("@prisma/client/sql");
 const util = require("../utils/passwordUtils");
 const path = require("node:path");
+
 const prisma = new PrismaClient();
 
-async function createNewUser(username, email, rawPassword) {
+exports.createNewUser = async (username, email, rawPassword) => {
   const hashedPassword = await util.encryptPassword(rawPassword);
 
   await prisma.users.create({
@@ -13,9 +15,9 @@ async function createNewUser(username, email, rawPassword) {
       password: hashedPassword,
     },
   });
-}
+};
 
-async function createFile(ownerId, uploadedFile, parentId) {
+exports.createFile = async (ownerId, uploadedFile, parentId) => {
   const basename = path.parse(uploadedFile.filename).name;
   await prisma.files.create({
     data: {
@@ -26,9 +28,9 @@ async function createFile(ownerId, uploadedFile, parentId) {
       ownerId,
     },
   });
-}
+};
 
-async function createFolder(name, ownerId, parentId) {
+exports.createFolder = async (name, ownerId, parentId) => {
   await prisma.folders.create({
     data: {
       name,
@@ -36,55 +38,42 @@ async function createFolder(name, ownerId, parentId) {
       ownerId,
     },
   });
-}
+};
 
-async function getFilesById(id, parentId) {
+exports.getFilesById = async (id, parentId) => {
   return await prisma.files.findMany({
     where: {
       ownerId: id,
       parentId: parentId || null,
     },
   });
-}
+};
 
-async function getFoldersById(id, parentId) {
+exports.getFoldersById = async (id, parentId) => {
   return await prisma.folders.findMany({
     where: {
       ownerId: id,
       parentId: parentId || null,
     },
   });
-}
+};
 
-async function getUserByUsername(username) {
+exports.getUserByUsername = async (username) => {
   return await prisma.users.findFirst({
     where: {
       username,
     },
   });
-}
+};
 
-async function getUserById(id) {
+exports.getUserById = async (id) => {
   return await prisma.users.findUnique({
     where: {
       id,
     },
   });
-}
+};
 
-async function getDirectories(id) {
-  return await prisma.$queryRaw`WITH RECURSIVE directory AS ( SELECT * FROM "Folders" WHERE id=${id} UNION 
-  SELECT f."id", f."name", f."parentId", f."ownerId" FROM "Folders" f INNER JOIN directory d ON d."parentId" = f."id" ) 
-  SELECT "id", "name", "parentId" FROM directory`;
-}
-
-module.exports = {
-  createNewUser,
-  createFile,
-  createFolder,
-  getFilesById,
-  getFoldersById,
-  getUserByUsername,
-  getUserById,
-  getDirectories,
+exports.getDirectories = async (id) => {
+  return await prisma.$queryRawTyped(recursiveDirectory(id));
 };
