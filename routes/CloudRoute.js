@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const util = require("../utils/authUtils");
-const { singleFileUpload } = require("../config/multer");
 
 const controller = require("../controllers/CloudController");
 router.get("/", util.isAuth, controller.cloudGet);
-router.post("/", util.isAuth, controller.cloudPost);
 
-router.post("/upload-file", singleFileUpload("uploadFile"), (req, res) => {
-  res.redirect("/cloud");
-});
+router.post("/upload-file", controller.uploadFilePost);
+router.post("/new-folder", controller.newFolderPost);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 <dialog id="new-folder-dialog">
     <form action="/cloud/new-folder" method="post">
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
         <label for="new-folder">Name The New Folder</label>
         <input type="text" name="newFolder" id="new-folder">
         <div class="button-group">
@@ -11,6 +12,7 @@
 
 <dialog id="upload-file-dialog">
     <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
         <label for="upload-file">Upload The File</label>
         <input type="file" name="uploadFile" id="upload-file">
         <div class="button-group">
