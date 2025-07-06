@@ -1,0 +1,12 @@
+<dialog id="new-folder-dialog">
+    <form action="/cloud/new-folder" method="post">
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="parentId" value="<%= parentId %>">
+        <label for="new-folder">Name The New Folder</label>
+        <input type="text" name="newFolder" id="new-folder">
+        <div class="button-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <button id="new-folder-close-button" class="close-dialog">X</button>
+</dialog>

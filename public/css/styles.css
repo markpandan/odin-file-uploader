@@ -65,6 +65,13 @@ button {
   margin-bottom: 32px;
 }
 
+.svg-icon {
+  filter: invert(32%) sepia(5%) saturate(4609%) hue-rotate(194deg)
+    brightness(106%) contrast(85%);
+  width: 2rem;
+  height: auto;
+}
+
 nav {
   padding: 1rem;
   background-color: var(--secondary-color);

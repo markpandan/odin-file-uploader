@@ -1,0 +1,18 @@
+<dialog id="upload-file-dialog">
+    <% 
+    const relativeDirectory = directories.map(
+        (value) => value.id).reverse().join("/")
+    %>
+    
+    <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="parentId" value="<%= parentId %>">
+        <input type="hidden" name="relativeDirectory" value="<%= relativeDirectory %>">
+        <label for="upload-file">Upload The File</label>
+        <input type="file" name="uploadFile" id="upload-file">
+        <div class="button-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <button id="upload-file-close-button" class="close-dialog">X</button>
+</dialog>

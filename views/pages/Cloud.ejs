@@ -1,36 +1,7 @@
 
+<%- include('../components/newFolderDialog', {currentUser, parentId}) %>
 
-<dialog id="new-folder-dialog">
-    <form action="/cloud/new-folder" method="post">
-        <input type="hidden" name="userId" value="<%= currentUser.id %>">
-        <input type="hidden" name="parentId" value="<%= parentId %>">
-        <label for="new-folder">Name The New Folder</label>
-        <input type="text" name="newFolder" id="new-folder">
-        <div class="button-group">
-            <button type="submit">Submit</button>
-        </div>
-    </form>
-    <button id="new-folder-close-button" class="close-dialog">X</button>
-</dialog>
-
-<dialog id="upload-file-dialog">
-    <% 
-    const relativeDirectory = directories.map(
-        (value) => value.id).reverse().join("/")
-    %>
-    
-    <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="userId" value="<%= currentUser.id %>">
-        <input type="hidden" name="parentId" value="<%= parentId %>">
-        <input type="hidden" name="relativeDirectory" value="<%= relativeDirectory %>">
-        <label for="upload-file">Upload The File</label>
-        <input type="file" name="uploadFile" id="upload-file">
-        <div class="button-group">
-            <button type="submit">Submit</button>
-        </div>
-    </form>
-    <button id="upload-file-close-button" class="close-dialog">X</button>
-</dialog>
+<%- include('../components/uploadFileDialog', {directories, currentUser, parentId}) %>
 
 <div class="subheader-container">
     <div>
@@ -54,15 +25,15 @@
     <% if (folders) { %>
         <% folders.forEach(value => { %>
                 <div class="cell" onclick="location.href='/cloud/<%= value.id %>'">
-                    <div class="image">Folder</div><%= value.name %>
+                    <img src="/assets/folder.svg" class="svg-icon" alt="Folder"><%= value.name %>
                 </div>
         <% }); %>
     <% } %>    
     <% if (files) { %>
         <% files.forEach(value => { %>
-                <div class="cell"><div class="image">Files</div><%= value.name %></div>
+                <div class="cell"><img src="/assets/file.svg" class="svg-icon" alt="File"><%= value.name %></div>
         <% }); %>
     <% } %>   
 </div>
 
-<script type="module" src="/js/scripts.js" defer></script>
+<script type="module" src="/js/cloudScripts.js" defer></script>

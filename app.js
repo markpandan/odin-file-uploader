@@ -54,7 +54,6 @@ const cloudRoute = require("./routes/CloudRoute");
 app.use("/cloud", cloudRoute);
 
 app.get("/logout", (req, res, next) => {
-  console.log("Reached Here");
   req.logout((err) => {
     if (err) {
       return next(err);
