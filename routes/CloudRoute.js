@@ -3,6 +3,8 @@ const router = express.Router();
 const util = require("../utils/authUtils");
 
 const controller = require("../controllers/CloudController");
+
+router.get("/:folderId", util.isAuth, controller.cloudGet);
 router.get("/", util.isAuth, controller.cloudGet);
 
 router.post("/upload-file", controller.uploadFilePost);

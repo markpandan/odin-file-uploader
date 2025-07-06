@@ -8,7 +8,7 @@ function signupGet(req, res) {
 async function signupPost(req, res) {
   await db.createNewUser(req.body.username, req.body.email, req.body.password);
 
-  res.redirect("/");
+  res.redirect("/login");
 }
 
 module.exports = {

@@ -1,6 +1,12 @@
+<% 
+    const relativeDirectory = directories.map(
+        (value) => value.id).reverse().join("/")
+%>
+
 <dialog id="new-folder-dialog">
     <form action="/cloud/new-folder" method="post">
         <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="parentId" value="<%= parentId %>">
         <label for="new-folder">Name The New Folder</label>
         <input type="text" name="newFolder" id="new-folder">
         <div class="button-group">
@@ -13,6 +19,8 @@
 <dialog id="upload-file-dialog">
     <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="relativeDirectory" value="<%= relativeDirectory %>">
+        <input type="hidden" name="parentId" value="<%= parentId %>">
         <label for="upload-file">Upload The File</label>
         <input type="file" name="uploadFile" id="upload-file">
         <div class="button-group">
@@ -25,9 +33,13 @@
 <div class="subheader-container">
     <div>
         <div class="breadcrumbs">
-            <a href="/" class="directory">Photos</a> <span>></span>
-            <a href="/" class="directory">Images</a> <span>></span>
-            <a href="/" class="directory">Family</a>
+            <a href="/cloud" class="directory">Home</a>
+            <%  if ( directories.length != 0 ) { %> 
+            <%  directories.reverse().forEach((value, index) => { %>
+                <span>></span>
+                <a href='/cloud/<%= value.id %>' class="directory"><%= value.name %></a>
+            <% })
+            } %>
         </div>
         <div class="button-group">
             <button id="new-folder-button">New Folder</button>
@@ -37,14 +49,18 @@
 </div>
 
 <div class="container files-container">
-    <div class="cell"><div class="image"></div>Folder 1</div>
-    <div class="cell"><div class="image"></div>Folder 2</div>
-    <div class="cell"><div class="image"></div>Folder 3</div>
-    <div class="cell"><div class="image"></div>Folder 4</div>
-    <div class="cell"><div class="image"></div>Folder 5</div>
-    <div class="cell"><div class="image"></div>Folder 6</div>
-    <div class="cell"><div class="image"></div>Folder 7</div>
-    <div class="cell"><div class="image"></div>Folder 8</div>
+    <% if (folders) { %>
+        <% folders.forEach(value => { %>
+                <div class="cell" onclick="location.href='/cloud/<%= value.id %>'">
+                    <div class="image">Folder</div><%= value.name %>
+                </div>
+        <% }); %>
+    <% } %>    
+    <% if (files) { %>
+        <% files.forEach(value => { %>
+                <div class="cell"><div class="image">Files</div><%= value.name %></div>
+        <% }); %>
+    <% } %>   
 </div>
 
 <script type="module" src="/js/scripts.js" defer></script>

@@ -4,6 +4,7 @@ const path = require("node:path");
 const passport = require("passport");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
+const util = require("./utils/authUtils");
 
 require("dotenv").config();
 
@@ -38,11 +39,12 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.parentId = null;
+  // res.locals.directory = "";
   next();
 });
 
 const loginRoute = require("./routes/LoginRoute");
-app.use("/", loginRoute);
 app.use("/login", loginRoute);
 
 const signupRoute = require("./routes/SignupRoute");
@@ -52,13 +54,16 @@ const cloudRoute = require("./routes/CloudRoute");
 app.use("/cloud", cloudRoute);
 
 app.get("/logout", (req, res, next) => {
+  console.log("Reached Here");
   req.logout((err) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
+    res.redirect("/login");
   });
 });
+
+app.use("/", util.isAuth, (req, res) => res.redirect("/cloud"));
 
 const PORT = 8080;
 app.listen(PORT, () => {

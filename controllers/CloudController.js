@@ -1,8 +1,17 @@
 const { singleFileUpload } = require("../config/multer");
-const { createFile, createFolder } = require("../prisma/queries");
+const db = require("../prisma/queries");
 
-function cloudGet(req, res) {
-  res.render("index", { page: "cloud" });
+async function cloudGet(req, res) {
+  const userId = req.user.id;
+  const folderId = req.params.folderId;
+
+  const files = await db.getFilesById(userId, folderId);
+  const folders = await db.getFoldersById(userId, folderId);
+  const directories = await db.getDirectories(folderId);
+
+  res.locals.parentId = folderId;
+
+  res.render("index", { page: "cloud", files, folders, directories });
 }
 
 function cloudPost(req, res) {}
@@ -10,14 +19,26 @@ function cloudPost(req, res) {}
 const uploadFilePost = [
   singleFileUpload("uploadFile"),
   async (req, res) => {
-    await createFile(req.body.userId, req.file);
-    res.redirect("/cloud");
+    const parentId = req.body.parentId;
+    await db.createFile(req.body.userId, req.file, parentId);
+
+    if (parentId) {
+      res.redirect(`/cloud/${parentId}`);
+    } else {
+      res.redirect("/cloud");
+    }
   },
 ];
 
 async function newFolderPost(req, res) {
-  await createFolder(req.body.newFolder, req.body.userId);
-  res.redirect("/cloud");
+  const parentId = req.body.parentId;
+  await db.createFolder(req.body.newFolder, req.body.userId, parentId);
+
+  if (parentId) {
+    res.redirect(`/cloud/${parentId}`);
+  } else {
+    res.redirect("/cloud");
+  }
 }
 
 module.exports = {
