@@ -22,10 +22,19 @@ model Users {
   @@unique([username, email])
 }
 
+// model Files {
+//   id           String @id @default(uuid(7))
+//   fieldname    String
+//   originalName String
+//   size         Int
+
+//   to_share Boolean
+// }
+
 // model Files
 // id UUID
 // name String
-// parent FOREIGN_KEY
+// parent FOREIGN_KEY Folders
 // owner FOREIGN KEY Users
 // to_share BOOLEAN
 

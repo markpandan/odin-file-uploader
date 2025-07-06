@@ -10,7 +10,7 @@
 </dialog>
 
 <dialog id="upload-file-dialog">
-    <form action="/cloud/upload-file" method="post">
+    <form action="/cloud/upload-file" method="post" enctype="multipart/form-data">
         <label for="upload-file">Upload The File</label>
         <input type="file" name="uploadFile" id="upload-file">
         <div class="button-group">
@@ -44,3 +44,5 @@
     <div class="cell"><div class="image"></div>Folder 7</div>
     <div class="cell"><div class="image"></div>Folder 8</div>
 </div>
+
+<script type="module" src="/js/scripts.js" defer></script>
