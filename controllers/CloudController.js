@@ -1,5 +1,6 @@
 const { singleFileUpload } = require("../config/multer");
 const db = require("../prisma/queries");
+const routeCorrectUrl = require("../utils/routeCorrectUrl");
 
 async function cloudGet(req, res) {
   const userId = req.user.id;
@@ -22,11 +23,8 @@ const uploadFilePost = [
     const parentId = req.body.parentId;
     await db.createFile(req.body.userId, req.file, parentId);
 
-    if (parentId) {
-      res.redirect(`/cloud/${parentId}`);
-    } else {
-      res.redirect("/cloud");
-    }
+    const url = routeCorrectUrl("cloud", parentId);
+    res.redirect(url);
   },
 ];
 
@@ -34,11 +32,16 @@ async function newFolderPost(req, res) {
   const parentId = req.body.parentId;
   await db.createFolder(req.body.newFolder, req.body.userId, parentId);
 
-  if (parentId) {
-    res.redirect(`/cloud/${parentId}`);
-  } else {
-    res.redirect("/cloud");
-  }
+  const url = routeCorrectUrl("cloud", parentId);
+  res.redirect(url);
+}
+
+async function renameFilePost(req, res) {
+  const parentId = req.params.folderId;
+  await db.updateFileById(req.params.fileId, req.body.newNameFile);
+
+  const url = routeCorrectUrl("cloud", parentId);
+  res.redirect(url);
 }
 
 module.exports = {
@@ -46,4 +49,5 @@ module.exports = {
   cloudPost,
   uploadFilePost,
   newFolderPost,
+  renameFilePost,
 };

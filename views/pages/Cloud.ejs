@@ -1,7 +1,10 @@
-
 <%- include('../components/newFolderDialog', {currentUser, parentId}) %>
 
 <%- include('../components/uploadFileDialog', {directories, currentUser, parentId}) %>
+
+<%- include('../components/fileInfoDialog') %>
+
+<%- include('../components/renameFileDialog') %>
 
 <div class="subheader-container">
     <div>
@@ -31,9 +34,45 @@
     <% } %>    
     <% if (files) { %>
         <% files.forEach(value => { %>
-                <div class="cell"><img src="/assets/file.svg" class="svg-icon" alt="File"><%= value.name %></div>
+                <div class="cell" 
+                onclick="displayfileInfo({ id: '<%= value.id %>',
+                                           name: '<%= value.name %>', 
+                                           size: '<%= value.size %>'})">
+                    <img src="/assets/file.svg" class="svg-icon" alt="File"><%= value.name %>
+                </div>
         <% }); %>
     <% } %>   
 </div>
 
-<script type="module" src="/js/cloudScripts.js" defer></script>
+<script src="/js/cloudScripts.js"></script>
+<script>
+    function displayfileInfo(file) {
+        fileInfoDialog.showModal();
+        
+        const title = document.querySelector("#file-info-dialog .file-title");
+        title.textContent = file.name;
+
+        const size = document.querySelector("#file-info-dialog .file-size");
+        size.textContent = file.size;
+
+        const renameButton = document.querySelector("#rename-file-button")
+        renameButton.addEventListener("click", () => {
+            fileInfoDialog.close();
+            renameFile(file);
+        })
+    }
+
+    function renameFile(file) {
+        renameFileDialog.showModal();
+
+        const fileName = document.querySelector("#rename-file-dialog .file-name")
+        fileName.textContent = file.name
+
+        const filenameInput = document.querySelector("#rename-file-dialog #new-name-file")
+        filenameInput.setAttribute("value", file.name)
+
+        const form = document.querySelector("#rename-file-dialog form") 
+        form.action = `/cloud/<%= parentId || 0 %>/rename/${file.id}`
+    }
+
+</script>

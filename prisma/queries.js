@@ -77,3 +77,15 @@ exports.getUserById = async (id) => {
 exports.getDirectories = async (id) => {
   return await prisma.$queryRawTyped(recursiveDirectory(id));
 };
+
+exports.updateFileById = async (id, newName) => {
+  const updateUser = await prisma.files.update({
+    where: {
+      id,
+    },
+    data: {
+      name: newName,
+    },
+  });
+  console.log(updateUser);
+};
