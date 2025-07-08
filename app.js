@@ -53,6 +53,12 @@ app.use("/signup", signupRoute);
 const cloudRoute = require("./routes/CloudRoute");
 app.use("/cloud", cloudRoute);
 
+const { getOneFileById } = require("./prisma/queries");
+app.get("/download/:fileId", async (req, res) => {
+  const file = await getOneFileById(req.params.fileId);
+  res.download(file.directory);
+});
+
 app.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {

@@ -26,6 +26,7 @@ exports.createFile = async (ownerId, uploadedFile, parentId) => {
       size: uploadedFile.size,
       parentId: parentId || null,
       ownerId,
+      directory: uploadedFile.path,
     },
   });
 };
@@ -36,6 +37,14 @@ exports.createFolder = async (name, ownerId, parentId) => {
       name,
       parentId: parentId || null,
       ownerId,
+    },
+  });
+};
+
+exports.getOneFileById = async (id) => {
+  return await prisma.files.findUnique({
+    where: {
+      id,
     },
   });
 };

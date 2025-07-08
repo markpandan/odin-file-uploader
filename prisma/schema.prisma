@@ -30,6 +30,8 @@ model Files {
   name String
   size Int
 
+  directory String?
+
   parent   Folders? @relation(fields: [parentId], references: [id])
   parentId String?
 

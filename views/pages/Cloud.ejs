@@ -1,6 +1,11 @@
 <%- include('../components/newFolderDialog', {currentUser, parentId}) %>
 
-<%- include('../components/uploadFileDialog', {directories, currentUser, parentId}) %>
+<% 
+const relativeDirectory = directories.map(
+    (value) => value.id).reverse().join("/")
+%>
+
+<%- include('../components/uploadFileDialog', {relativeDirectory, currentUser, parentId}) %>
 
 <%- include('../components/fileInfoDialog') %>
 
@@ -59,6 +64,15 @@
         renameButton.addEventListener("click", () => {
             fileInfoDialog.close();
             renameFile(file);
+        })
+
+        const downloadButton = document.querySelector("#download-file-button")
+        downloadButton.addEventListener("click", () => {
+            location.href = `/download/${file.id}`
+            // console.log('<%= parentId || 0 %>')
+            // console.log('<%= relativeDirectory || 0 %>')
+            // console.log(file.id)
+            // location.href = `/download/${file.id}`
         })
     }
 
