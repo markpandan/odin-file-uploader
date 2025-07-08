@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const { recursiveDirectory } = require("@prisma/client/sql");
 const util = require("../utils/passwordUtils");
 const path = require("node:path");
+const removeTmpInPath = require("../utils/removeTmpInPath");
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,7 @@ exports.createNewUser = async (username, email, rawPassword) => {
 
 exports.createFile = async (ownerId, uploadedFile, parentId) => {
   const basename = path.parse(uploadedFile.filename).name;
+  const filePath = removeTmpInPath(uploadedFile.path);
   await prisma.files.create({
     data: {
       id: basename,
@@ -26,7 +28,7 @@ exports.createFile = async (ownerId, uploadedFile, parentId) => {
       size: uploadedFile.size,
       parentId: parentId || null,
       ownerId,
-      directory: uploadedFile.path,
+      directory: filePath,
     },
   });
 };
