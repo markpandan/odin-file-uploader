@@ -69,10 +69,6 @@ const relativeDirectory = directories.map(
         const downloadButton = document.querySelector("#download-file-button")
         downloadButton.addEventListener("click", () => {
             location.href = `/download/${file.id}`
-            // console.log('<%= parentId || 0 %>')
-            // console.log('<%= relativeDirectory || 0 %>')
-            // console.log(file.id)
-            // location.href = `/download/${file.id}`
         })
     }
 

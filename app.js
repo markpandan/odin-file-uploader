@@ -54,6 +54,7 @@ const cloudRoute = require("./routes/CloudRoute");
 app.use("/cloud", cloudRoute);
 
 const { getOneFileById } = require("./prisma/queries");
+// TODO: Implement user verification for downloading the files
 app.get("/download/:fileId", async (req, res) => {
   const file = await getOneFileById(req.params.fileId);
   res.download(file.directory);

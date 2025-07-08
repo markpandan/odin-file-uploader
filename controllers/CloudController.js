@@ -1,5 +1,6 @@
-const { singleFileUpload } = require("../config/multer");
 const db = require("../prisma/queries");
+const { singleFileUpload } = require("../config/multer");
+const { uploadToCloud } = require("../config/cloudinary");
 const routeCorrectUrl = require("../utils/routeCorrectUrl");
 
 async function cloudGet(req, res) {
@@ -19,9 +20,16 @@ function cloudPost(req, res) {}
 
 const uploadFilePost = [
   singleFileUpload("uploadFile"),
-  async (req, res) => {
+  async (req, res, next) => {
     const parentId = req.body.parentId;
-    await db.createFile(req.body.userId, req.file, parentId);
+
+    try {
+      await db.createFile(req.body.userId, req.file, parentId);
+      await uploadToCloud(req.file.path, req.file.destination);
+    } catch (error) {
+      next(error);
+      return;
+    }
 
     const url = routeCorrectUrl("cloud", parentId);
     res.redirect(url);
